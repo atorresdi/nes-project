@@ -10,8 +10,11 @@
 #include <driverlib/gpio.h>
 #include <driverlib/timer.h>
 
+#include "CC2650STK.h"
+#include "serial_port.h"
+
 const uint32_t TIMER_TICKS_PER_USEC = 48;
-const uint32_t DELAY_TIME_USEC = 1000*100; // 100 ms
+const uint32_t DELAY_TIME_USEC = 1000*500; // 100 ms
 
 void Startup();
 void Timer_Init();
@@ -24,12 +27,16 @@ int main(void)
     Startup();
     Timer_Init();
     GPIO_Init();
+    Sep_Init();
 
-    IOCPinTypeGpioOutput(10); // Configure DIO 0 as 'standard' output
+    IOCPinTypeGpioOutput(Board_STK_LED1); // Configure DIO 0 as 'standard' output
+
+    char tx_buf[] = "Hola!\r\n";
 
     while (1)
     {
-        GPIO_toggleDio(10);
+        GPIO_toggleDio(Board_STK_LED1);
+        Sep_Send(tx_buf, sizeof(tx_buf));
         Delay_Microsec(DELAY_TIME_USEC);
     }
 
