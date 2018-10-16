@@ -20,26 +20,16 @@
     #undef DEVICE_FAMILY_PATH 
     #define DEVICE_FAMILY_PATH(x) <ti/devices/DEVICE_FAMILY/x> 
 #else 
-    #error "You must define DEVICE_FAMILY at the project level as one of cc26x0, cc26x0r2, cc13x0, etc." 
+//    #error "You must define DEVICE_FAMILY at the project level as one of cc26x0, cc26x0r2, cc13x0, etc."
+    #define DEVICE_FAMILY_PATH(x) <x>
 #endif 
     
 
 #include DEVICE_FAMILY_PATH(driverlib/rf_mailbox.h)
 #include DEVICE_FAMILY_PATH(driverlib/rf_common_cmd.h)
 #include DEVICE_FAMILY_PATH(driverlib/rf_ieee_cmd.h)
-#include <ti/drivers/rf/RF.h>
 #include DEVICE_FAMILY_PATH(rf_patches/rf_patch_cpe_ieee.h)
 #include "smartrf_settings.h"
-
-
-// TI-RTOS RF Mode Object
-RF_Mode RF_prop =
-{
-    .rfMode = RF_MODE_IEEE_15_4,
-    .cpePatchFxn = &rf_patch_cpe_ieee,
-    .mcePatchFxn = 0,
-    .rfePatchFxn = 0,
-};
 
 // Overrides for CMD_RADIO_SETUP
 uint32_t pOverrides[] =
